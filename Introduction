@@ -1,0 +1,102 @@
+# Sahil Shelote GitHub Repository (Rotation 1, Group 6)
+
+## Introduction
+This project focuses on identifying genomic changes in microorganism strains. We developed new assemblies for the samples using tools such as **Minimap2** and **Unicycler**. The quality of these assemblies was evaluated using **BUSCO** and **QUAST**. For visualization and annotation, we utilized **Flye**, **Prokka**, and **Genovi**.
+
+## Things to Note
+- Group 6 created this repository to store and manage the codebase for the analysis of a sample set of 6.
+- All relevant scripts are stored in the repository under the file name `final`.
+- The scripts were executed using `sbatch` scripts in an HPC environment.
+
+## Installation and Tools
+Below are the tools and their installation instructions:
+
+- **Conda**:  
+  `bash <conda-installer-name>-latest-MacOSX-x86_64.sh` (for macOS)
+  
+- **Nanoplot**:  
+  `conda install -c bioconda nanoplot`
+  
+- **Minimap2**:  
+  `conda install -c bioconda minimap2`  
+  ![Install with Bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)
+  
+- **Unicycler**:  
+  `conda install -c bioconda unicycler`  
+  ![Install with Bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)
+
+- **QUAST**:  
+  `conda install -c bioconda quast`  
+  ![Install with Bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)
+
+- **BUSCO**:  
+  `conda install -c bioconda busco`  
+  [User Guide](https://busco.ezlab.org/busco_userguide.html)
+
+- **Prokka**:  
+  `conda install -c bioconda prokka`  
+  [GitHub](https://github.com/tseemann/prokka)
+
+- **Flye**:  
+  `conda install flye`  
+  [GitHub](https://github.com/fenderglass/Flye/blob/flye/docs/INSTALL.md)
+
+- **Genovi**:  
+  `conda install -c bioconda genovi`  
+  [GitHub](https://github.com/robotoD/GenoVi)
+
+## Data
+The input data for this project is located on the HPC at:  
+`/workhere/students_2023/Matt_resources`
+
+### Subfolders:
+- **Short Reads** (Illumina data)  
+- **Long Reads** (Nanopore data)  
+
+## Expected Results
+### Nanoplot
+Examples of output files:  
+- `NanoPlot-report.html`  
+- `NanoStats.txt`  
+- `WeightedHistogramReadlength.png`  
+
+### Unicycler
+Examples of output files:  
+- `assembly.fasta`  
+- `001_spades_graph_k015.gfa`  
+- `unicycler.log`  
+
+### Minimap2
+Examples of output files:  
+- `minimap_long_pf.fasta`  
+- `minimap_long_pf.gfa`  
+
+### QUAST
+Examples of output files:  
+- `report.html`  
+- `quast.log`  
+
+### BUSCO
+Examples of output files:  
+- `short_summary.specific.archaea_odb10.bsc_hyb_pf.txt`  
+
+### Genovi
+Examples of output files:  
+- `genovi_10_result.png`  
+- `genovi_10_result_COG_Classification.csv`  
+
+### Prokka
+Examples of output files:  
+- `prokka_b10.gff`  
+- `prokka_b10.txt`  
+
+### Flye
+Examples of output files:  
+- `flye.log`  
+
+## Accessing Results
+To view the results, use the following command in your terminal:  
+```bash
+python3 -m http.server 12121
+
+
