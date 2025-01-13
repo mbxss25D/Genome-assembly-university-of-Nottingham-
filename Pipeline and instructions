@@ -1,0 +1,139 @@
+###Project1 - Group 6: Sequence Assemblies and Quality Control (Mentor: Matt Loose)
+
+##Introduction
+
+Group 6 focused on studying genomic variations in microorganism strains. Various genetic changes were introduced, but their precise locations were unknown. This project aimed to create assemblies to identify these changes using predominantly long-read data.
+This repository includes the scripts for:
+
+Generating assemblies from long and short reads.
+Performing quality control on assemblies.
+Visualization and annotation of assembled genomes.
+
+#Features of the Pipeline
+
+Code for Generating Assemblies
+Short-read assembly
+Long-read assembly
+Hybrid (short + long) read assembly
+Quality Control Tools
+BUSCO: Benchmarking Universal Single-Copy Orthologs.
+QUAST: Quality Assessment Tool for Genome Assemblies.
+Visualization and Annotation Tools
+Flye: Long-read genome assembler.
+Prokka: Rapid genome annotation tool.
+Genovi: Visualization of genome annotations.
+Project Data
+
+The data for analysis is located on the HPC system:
+/workhere/students_2023/Matt_resources
+
+#Data Structure
+Short Reads: Illumina data
+Long Reads: Nanopore data
+Setup and Prerequisites
+
+#General HPC Guidelines
+Make scripts executable: Use chmod +x script_name.sh.
+Ensure user-specific paths are updated.
+Deactivate conda environments after use.
+
+##Installation Instructions
+
+#Below are the commands to set up the required tools:
+
+# Create and activate conda environment
+conda create -n <env_name> -c bioconda <tool_name>
+conda activate <env_name>
+
+# Tools Installation
+conda install -c bioconda nanoplot
+conda install -c bioconda minimap2
+conda install -c bioconda unicycler
+conda install -c bioconda quast
+conda install -c bioconda busco
+conda install -c bioconda flye
+conda install -c bioconda prokka
+conda install -c bioconda genovi
+
+For best practices, use SLURM scripts for installation on HPC systems.
+
+##Workflow Summary
+
+1. Quality Control
+NanoPlot: Generates quality plots for short and long reads.
+2. Merging Reads
+Merging simplifies downstream steps like trimming, filtering, and assembly.
+3. Genome Assembly
+Minimap2: Aligns long reads for genome assembly.
+Unicycler: Combines short and long reads for hybrid assembly.
+Flye: Creates high-quality assemblies from long reads.
+4. Quality Assessment
+QUAST: Computes metrics like N50, genome size, and alignment statistics.
+BUSCO: Evaluates genome completeness based on orthologous genes.
+5. Genome Annotation
+Prokka: Annotates assemblies for genomic elements like CDS, tRNAs, and rRNAs.
+6. Visualization
+Genovi: Creates graphical representations of annotations.
+
+###Execution Examples
+
+##Running NanoPlot
+
+#!/bin/bash
+#SBATCH --job-name=nanoplot_job
+#SBATCH --partition=hpc
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem=8G
+#SBATCH --time=02:00:00
+#SBATCH --output=/shared/home/<username>/slurm-nanoplot-%j.out
+
+source $HOME/.bash_profile
+conda activate <path_to_conda_env>
+NanoPlot --fastq <input_path> --threads 8 --plots kde dot -o <output_path>
+conda deactivate
+
+##Running QUAST
+
+#!/bin/bash
+#SBATCH --job-name=quast_job
+#SBATCH --partition=hpc
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --mem=30G
+#SBATCH --time=24:00:00
+#SBATCH --output=/shared/home/<username>/slurm-quast-%j.out
+
+source $HOME/.bash_profile
+conda activate <path_to_conda_env>
+python /shared/conda/shared/bin/quast -o <output_path> -r <reference_genome> -g <gff_file> <assembly_file>
+conda deactivate
+
+##Running Prokka
+
+#!/bin/bash
+#SBATCH --job-name=prokka_job
+#SBATCH --partition=hpc
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --mem=30G
+#SBATCH --time=24:00:00
+#SBATCH --output=/shared/home/<username>/slurm-prokka-%j.out
+
+source $HOME/.bash_profile
+conda activate <path_to_conda_env>
+prokka --outdir <output_path> --prefix <prefix_name> --kingdom <kingdom> --genus <genus> <assembly_file>
+conda deactivate
+
+##Visualization and Results
+
+Use python3 -m http.server 12121 to view results in a web browser.
+Access via http://<HPC_IP>:12121.
+
+##References
+
+Unicycler Documentation
+Prokka Documentation
+Genovi Documentation
+Ziemann, M., Poulain, P., & Bora, A. (2023). The Five Pillars of Computational Reproducibility.
+
